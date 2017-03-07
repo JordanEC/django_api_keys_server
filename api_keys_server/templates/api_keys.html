@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Lista de API Keys{% endblock %}
+{% block content %}
+        <div style="text-align: center">
+        <a href="/">Inicio</a><br>
+        <a href="/admin/api_keys_server/apikey/add/">Generar API Key</a><br>
+        <a href="/api/">API</a>
+        <h1>Lista de API Keys</h1>
+    </div>
+
+    <table style="width:100%;text-align: left">
+        <tr style="color: blue">
+            <th>Correo</th>
+            <th>API Key</th>
+            <th>Total de requests</th>
+        </tr>
+        {% for key in api_keys %}
+            <tr>
+                <td>{{ key.mail }}</td>
+                <td>{{ key.api_key }}</td>
+                <td>{{ key.requests }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

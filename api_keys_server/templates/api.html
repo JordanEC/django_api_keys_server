@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}API{% endblock %}
+{% block content %}
+    <div style="text-align: center">
+        <a href="/">Inicio</a><br>
+        <a href="/api_keys/">API Keys registradas</a>
+        <h1>API</h1>
+    </div>
+    <h3>Encontrar duplicados</h3>
+
+    API Key:<br>
+    <input id="api_key" style="margin: 2px;" size="60" type="text"><br>
+    Lista de Strings separadas por coma:<br>
+    <input id="data" style="margin: 2px;" size="60" type="text"><br>
+    <button style="margin: 2px;" type="submit" onclick="find_duplicates()">Obtener duplicados</button><br>
+    <h4>Output:</h4>
+    <p id="console" style="margin: 10px;border-width: 1px;border-style: solid;min-height: 30px;"></p>
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        function find_duplicates() {
+            var xhttp = new XMLHttpRequest();
+            var api_key = document.getElementById("api_key").value;
+            var string_list = document.getElementById("data").value;
+
+
+            xhttp.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                document.getElementById("console").innerHTML = this.responseText;
+                document.getElementById("display").innerHTML = this.responseText;
+            }
+          };
+          xhttp.open("GET", "/api/find_duplicates/", true);
+          xhttp.setRequestHeader("api-key", api_key);
+          xhttp.setRequestHeader("data", string_list);
+          xhttp.send();
+        }
+    </script>
+{% endblock %}
