@@ -28,12 +28,22 @@ class APIKeyList(APIView):
     @permission_classes(permissions.IsAuthenticated,)
     def post(self, request, format=None):
         serializer = APIKeySerializer(data=request.data)
+        context = {}
+
         if serializer.is_valid():
-            serializer.save()
-            api_keys_ = APIKey.objects.all()
-            context = {'api_keys': api_keys_}
-            return Response(context, status=201, content_type='text/html', template_name='api_keys.html')
-        return Response(serializer.errors, status=400, content_type='text/html')
+            try:
+                serializer.save()
+                context['message'] = 'API Key generada'
+                status = 201
+            except StandardError:
+                context['message'] = serializer['mail'].errors[0]
+                status = 200
+        else:
+            status = 200
+            context['message'] = serializer['mail'].errors[0]
+        api_keys_ = APIKey.objects.all()
+        context['api_keys'] = api_keys_
+        return Response(context, status=status, content_type='text/html', template_name='api_keys.html')
 
 
 class WordsDuplicatedDetail(APIView):
