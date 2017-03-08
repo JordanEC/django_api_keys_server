@@ -21,21 +21,33 @@
 {% block script %}
     <script>
         function find_duplicates() {
-            var xhttp = new XMLHttpRequest();
+            var xmlhttp = new XMLHttpRequest();
             var api_key = document.getElementById("api_key").value;
             var string_list = document.getElementById("data").value;
+            var string_array = string_list.split(',');
+            var json_data = JSON.stringify(string_array);
 
-
-            xhttp.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                document.getElementById("console").innerHTML = this.responseText;
-                document.getElementById("display").innerHTML = this.responseText;
-            }
-          };
-          xhttp.open("GET", "/api/find_duplicates/", true);
-          xhttp.setRequestHeader("api-key", api_key);
-          xhttp.setRequestHeader("data", string_list);
-          xhttp.send();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if(this.status == 200){
+                        document.getElementById("console").innerHTML =
+                                '\"code\": \"'+ this.status + '\"<br>' +
+                                '\"status\": \"' + this.statusText + '\"<br>' +
+                                '\"duplicates\" : '+JSON.parse(this.responseText).duplicates;
+                    }
+                    else{
+                        document.getElementById("console").innerHTML =
+                                '\"code\": \"'+ this.status + '\"<br>' +
+                                '\"status\": \"' + this.statusText + '\"<br>' +
+                                '\"message\": ' +this.responseText+'';
+                    }
+                }
+            };
+        xmlhttp.open("GET", "/api/find_duplicates/", true);
+        xmlhttp.setRequestHeader("accept", "application/json");
+        xmlhttp.setRequestHeader("api-key", api_key);
+        xmlhttp.setRequestHeader("data", json_data);
+        xmlhttp.send();
         }
     </script>
 {% endblock %}

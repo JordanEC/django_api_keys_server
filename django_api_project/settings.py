@@ -23,7 +23,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '(of=x!(0^jxun@4#+=)&t5*rql(epjgf0vco@&(o4ruw^4ws&4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api_keys_server',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -78,10 +79,9 @@ WSGI_APPLICATION = 'django_api_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dbup3nj3dgj59q',
-        'USER': 'cbdfpksbespfff',
-        'PASSWORD': '747cee9da5be3b5bf334ceed50fa349b3ec2d6b8e1a8f0402b0218c654d95e01',
-        'HOST': 'ec2-50-19-89-124.compute-1.amazonaws.com',
+        #
+        #
+        #
         'PORT': 5432,
     }
 }

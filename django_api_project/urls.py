@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
 from api_keys_server import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^api_keys/$', views.api_keys, name='api_keys'),
-    url(r'^api/find_duplicates/$', views.find_duplicates, name='find_duplicates'),
+    url(r'^api_keys/$',views.APIKeyList.as_view()),
+    url(r'^api/find_duplicates/$', views.WordsDuplicatedDetail.as_view()),
     url(r'^api/$', views.api_view, name='api'),
     url(r'^admin/', admin.site.urls),
 ]
