@@ -1,10 +1,9 @@
-# coding=utf-8
+# coding= utf-8
 from io import BytesIO
 
 import json
-from rest_framework.decorators import api_view
 from django.shortcuts import render
-from rest_framework import permissions, status
+from rest_framework import permissions
 from rest_framework.decorators import permission_classes
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import JSONParser
@@ -73,12 +72,13 @@ def find_duplicates(request):
     except KeyError:
         return Response(u'API Key inválida',status=401, content_type="application/json")
     try:
-        data = request.META['HTTP_DATA']
-        stream = BytesIO(data)
+        data = request.META['HTTP_DATA'].decode("windows-1252")
+        data_str = data.encode("utf-8")
+        stream = BytesIO(data_str)
         data_list = JSONParser().parse(stream)
         duplicates = util.get_duplicates(data_list)
-    except (KeyError, ParseError):
+    except (KeyError, ParseError, UnicodeDecodeError):
         return Response(u'El formato de los datos no es válido', status=400, content_type="application/json")
 
-    response = json.dumps(duplicates)
+    response = json.dumps(duplicates, ensure_ascii=False).encode('utf8')
     return Response({'duplicates': response}, status=200, content_type="application/json")
