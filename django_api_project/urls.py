@@ -13,14 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from api_keys_server import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^', include('authentication.urls')),
+    #url(r'^api_keys/(?P<message>[-\w]+)/$',views.APIKeyList.as_view(),name='api-keylist'),
     url(r'^api_keys/$',views.APIKeyList.as_view()),
     url(r'^api/find_duplicates/$', views.WordsDuplicatedDetail.as_view()),
     url(r'^api/$', views.api_view, name='api'),
+    url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
 ]
